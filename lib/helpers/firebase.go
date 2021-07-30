@@ -18,21 +18,21 @@ type FirebaseConfig struct {
 	AppId             string `json:"appId"`
 }
 
-// GetBrand ...
-func GetFirebaseConfig() Brand {
+// GetFirebaseConfig ...
+func GetFirebaseConfig() FirebaseConfig {
 	jsonFile, err := ioutil.ReadFile(getFBSecretPath())
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	var brand Brand
+	var config FirebaseConfig
 
-	err = json.Unmarshal(jsonFile, &brand)
+	err = json.Unmarshal(jsonFile, &config)
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	return brand
+	return config
 }
 
 func getFBSecretPath() string {
