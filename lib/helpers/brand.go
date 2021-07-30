@@ -1,6 +1,12 @@
 package helpers
 
-import "os"
+import (
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"os"
+	"path"
+)
 
 // Brand ...
 type Brand struct {
@@ -13,33 +19,30 @@ type Brand struct {
 
 // GetBrand ...
 func GetBrand() Brand {
-	brand := Brand{
-		Token:    os.Getenv("BRAND_TOKEN"),
-		Name:     os.Getenv("BRAND_NAME"),
-		URL:      os.Getenv("BRAND_URL"),
-		Logo:     os.Getenv("BRAND_LOGO"),
-		LogoDark: os.Getenv("BRAND_LOGO_DARK"),
+	jsonFile, err := ioutil.ReadFile(getSecretPath())
+	if err != nil {
+		fmt.Println(err)
 	}
 
-	if brand.Token == "" {
-		brand.Token = "localhost"
-	}
+	var brand Brand
 
-	if brand.Name == "" {
-		brand.Name = "localhost"
-	}
-
-	if brand.URL == "" {
-		brand.URL = "http://localhost:8080"
-	}
-
-	if brand.Logo == "" {
-		brand.Logo = "/statics/logo_default.svg"
-	}
-
-	if brand.LogoDark == "" {
-		brand.LogoDark = "/statics/logo_white.svg"
+	err = json.Unmarshal(jsonFile, &brand)
+	if err != nil {
+		fmt.Println(err)
 	}
 
 	return brand
+}
+
+func getSecretPath() string {
+	isDev := os.Getenv("NODE_ENV") == "development"
+
+	secretPath := "/run/secrets/brand_secret"
+	if isDev {
+		root := os.Getenv("ROOT")
+		token := os.Getenv("BRAND_TOKEN")
+		secretPath = path.Join(root, "./projects", token, "./.configs/secrets/brand_secret.json")
+	}
+
+	return secretPath
 }
