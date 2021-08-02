@@ -19,26 +19,26 @@ var config = fiber.Config{
 
 // Server ...
 type Server struct {
-	App *fiber.App
+	App      *fiber.App
+	Listener *net.Listener
 }
 
 // New ...
 func New() Server {
+	listener, err := net.Listen("tcp4", getPort())
+	if err != nil {
+		fmt.Println(err)
+	}
+
 	app := fiber.New(config)
 
 	if os.Getenv("NODE_ENV") != "production" {
 		app.Use(logger.New())
 	}
 
-	return Server{app}
+	return Server{app, &listener}
 }
 
 func (s *Server) Start() {
-	listener, err := net.Listen("tcp4", getPort())
-
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	s.App.Listener(listener)
+	s.App.Listener(*s.Listener)
 }
