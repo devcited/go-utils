@@ -20,7 +20,7 @@ var config = fiber.Config{
 // Server ...
 type Server struct {
 	App      *fiber.App
-	Listener *net.Listener
+	Listener net.Listener
 }
 
 // New ...
@@ -36,9 +36,9 @@ func New() Server {
 		app.Use(logger.New())
 	}
 
-	return Server{app, &listener}
+	return Server{app, listener}
 }
 
 func (s *Server) Start() {
-	s.App.Listener(*s.Listener)
+	s.App.Listener(s.Listener)
 }
