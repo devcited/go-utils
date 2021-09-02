@@ -10,11 +10,13 @@ import (
 
 // Brand ...
 type Brand struct {
-	Token    string `json:"token"`
-	Name     string `json:"name"`
-	URL      string `json:"url"`
-	Logo     string `json:"logo"`
-	LogoDark string `json:"logo_dark"`
+	Token          string `json:"token"`
+	Name           string `json:"name"`
+	URL            string `json:"url"`
+	Logo           string `json:"logo"`
+	LogoDark       string `json:"logo_dark"`
+	LogoMobile     string `json:"logo_mobile"`
+	LogoMobileDark string `json:"logo_mobile_dark"`
 }
 
 // GetBrand ...
