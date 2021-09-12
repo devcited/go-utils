@@ -40,7 +40,7 @@ func GetStorageHost() string {
 	return host
 }
 
-// ProlongSession...
+// ProlongSession ...
 func ProlongSession(ctx *fiber.Ctx, UID string) {
 	ctx.Cookie(&fiber.Cookie{
 		Name:     "SES_UID",
