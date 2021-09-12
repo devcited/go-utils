@@ -18,18 +18,19 @@ func Init() {
 	rand.Seed(int64(binary.LittleEndian.Uint64(b[:])))
 }
 
+// Seed ...
 func Seed(value int64) {
 	rand.Seed(value)
 }
 
-// GenerateString ...
-func GenerateString(length *int) string {
-	l := 12
-	if length != nil {
-		l = *length
-	}
+// GenerateID ...
+func GenerateID() string {
+	return GenerateString(12)
+}
 
-	b := make([]byte, l)
+// GenerateString ...
+func GenerateString(length int) string {
+	b := make([]byte, length)
 	_, err := rand.Read(b)
 
 	if err != nil {
